@@ -2,17 +2,24 @@ import matplotlib.pyplot as plt
 from sklearn import linear_model
 import numpy as np
 
+# A projectile object tracks the position of the projectile along x and y axis aginst different time units.
 class Projectile:
     
     def __init__(self):
         self.trajectory = []
-        
+    
+    # Adds a new point in the trajectory of the projectile.
     def add_trajectory_point(self, time, along_x, along_y):
         self.trajectory.append((time, along_x, along_y))
-        
-    def number_of_points(self):
+    
+    # Returns the number of known trajectory points of the projectile.
+    def trajectory_points_count(self):
         return len(self.trajectory)
     
+    # Returns the tuple (vx, vy).
+    # vx is the initial throwing velocity along x-axis.
+    # vy is the initial throwing velocity along y-axis.
+    # This method performs a quadratic regression of x(t) and y(t) against t. Then computes vx = x'(0) and vy = y'(0).
     def get_initial_velocity_vector(self):
         t = np.array([np.array([time, time * time]) for (time, _, _) in self.trajectory])
         x = np.array([np.array([along_x]) for (_, along_x, _) in self.trajectory])
@@ -31,7 +38,8 @@ class Projectile:
         return vx, vy
         
     
-    def plot_graph(self):
+    # Plots y(t) against x(t), which is the trajectory of the projectile. 
+    def plot_trajectory(self):
         x = [along_x for (_, along_x, _) in self.trajectory]
         y = [along_y for (_, _, along_y) in self.trajectory]
         min_x = min(x)
